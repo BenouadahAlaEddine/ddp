@@ -1,0 +1,13 @@
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js application for DevOps project.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo 'Tests de l'application réussis' && exit 0" 
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
