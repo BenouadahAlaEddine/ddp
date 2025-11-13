@@ -3,11 +3,11 @@ name: Docker CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - master
       - develop
   pull_request: # Déclencheur important pour le flux de travail professionnel
     branches:
-      - main
+      - master
 
 jobs:
   # Job 1 : Intégration Continue (CI) - Exécute notre script Bash
