@@ -1,0 +1,49 @@
+name: Docker CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request: # Déclencheur important pour le flux de travail professionnel
+    branches:
+      - main
+
+jobs:
+  # Job 1 : Intégration Continue (CI) - Exécute notre script Bash
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # Configuration de l'environnement Node.js
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Étape clé : Rendre notre script Bash exécutable (commande Linux)
+      - name: Rendre le script build.sh exécutable
+        run: chmod +x build.sh # Commande Linux pour changer les permissions
+
+      # Exécution de notre script de build (commande Linux)
+      - name: Exécuter le script de Build et Test
+        run: ./build.sh # Exécution du script Bash
+
+  # Job 2 : Déploiement/Docker (CD) - S'exécute uniquement si le CI est réussi
+  docker_build_and_deploy:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    environment: production # Simulation d'un environnement réel
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+        
+      # Construction de l'image Docker (Commande Linux Docker)
+      - name: Construire l'image Docker
+        run: |
+          echo "--- Démarrage de la construction Docker ---"
+          docker build -t node-app-image .
+          echo "✅ Image Docker construite avec succès."
+          # NOTE: Dans un vrai projet, nous utiliserions ici 'docker push' vers Docker Hub/ACR/ECR.
